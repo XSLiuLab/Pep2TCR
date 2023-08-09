@@ -4,8 +4,14 @@ from .paras import *
 import pandas as pd
 import random
 import os
+import torch
 
 def main(args):
+    if torch.cuda.is_available():
+        print("Find GPU device avaliable, Using GPU mode!")
+    else:
+        print("Don't find GPU device avaliable, Using CPU mode!")
+
     if args.mode == "single":
         if (8<=len(args.cdr3)<=20) & (9<=len(args.pep)<=20):
             prediction = sin_pre(args.cdr3, args.pep, style_path, Avg_Ensemble, 
