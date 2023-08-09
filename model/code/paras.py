@@ -4,7 +4,7 @@ import os
 
 ################################# Change ab_path ####################################
 # 请提供到model的绝对路径 - Please provide the absolute path to model dir
-ab_path = "/home/dkx/jupyterlab/Pep2TCR/model"
+ab_path = "/path/to/model"
 #####################################################################################
 
 cd4_model_weight_path_avg =  os.path.join(ab_path, "weights/Avg/cd4_avg_ensemble_random_1.pt")
