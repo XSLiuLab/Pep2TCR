@@ -11,12 +11,11 @@ options(spinner.color = "#0dc5c1",
         spinner.type = 4)
 
 ################################# Change ab_path ####################################
-# 请提供到TCR_web的绝对路径 - Please provide the absolute path to TCR_web dir
+# Please provide the absolute path to TCR_web dir
 ab_path <- "~/R/TCR_Researchs/TCR_web/"
 activate_env_cmd <- ". ~/miniconda3/bin/activate;conda activate machine_learning_torch;"
 #####################################################################################
 
-# 读取文件
 cd4_data <- read_csv(paste0(ab_path, "data/cd4_data.csv"))
 cd4_cdr3 <- cd4_data$CDR3
 cd4_pep <- cd4_data$Epitope
@@ -37,8 +36,8 @@ HomePage <- dashboardPage(
                             tabItems(
                               tabItem(tabName = "single_mode",
                                       column(
-                                        width = 12,  # 设置列的宽度，根据需要进行调整
-                                        offset = 1,  # 设置列的偏移量，以实现居中对齐
+                                        width = 12,
+                                        offset = 1,
                                         box(
                                           width = 10,
                                           h3("Single Mode"),
@@ -53,8 +52,8 @@ HomePage <- dashboardPage(
                                         ))),
                               tabItem(tabName = "batch_mode",
                                       column(
-                                        width = 12,  # 设置列的宽度，根据需要进行调整
-                                        offset = 1,  # 设置列的偏移量，以实现居中对齐
+                                        width = 12,
+                                        offset = 1,
                                         box(
                                           width = 10,
                                           h3("Batch Mode"),
@@ -119,7 +118,7 @@ server <- function(input, output, session) {
     seqType = NULL,
     seq = NULL,
     number = NULL,
-    cal_df = cd4_data  # 计算得到的数据表--编辑距离, 初始是cd4_data(全部数据)
+    cal_df = cd4_data
   )
   
   single.reactiveValues.reset <- function() {
@@ -148,7 +147,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$single_pre, {
-    single.reactiveValues.reset() # 重置
+    single.reactiveValues.reset()
     pep_mask <- between(nchar(input$peptide), 9, 20) & !str_detect(input$peptide, "[^GAVLIPFYWSTCMNQDEKRHX-]")
     cdr3_mask <- between(nchar(input$cdr3), 8, 20) & !str_detect(input$cdr3, "[^GAVLIPFYWSTCMNQDEKRHX-]")
     if (pep_mask & cdr3_mask) {
@@ -159,7 +158,7 @@ server <- function(input, output, session) {
   })
   
   batch_cal <- reactive({
-    data_path <- input$upload_file$datapath # 获取上传文件路径
+    data_path <- input$upload_file$datapath
     script <- paste0(ab_path, "TCR_script_web/tcr_pre.py")
     cmd <- paste("python", script, "--mode batch --data_path", data_path)
     system(paste0(activate_env_cmd, cmd),
@@ -233,7 +232,7 @@ server <- function(input, output, session) {
       columnDefs = list(
         list(
           targets = "_all",
-          className = "dt-left"  # 所有列的内容左对齐
+          className = "dt-left"
         ))))
   
   output$batch_warning <- renderText({
@@ -242,7 +241,7 @@ server <- function(input, output, session) {
     }
   })
   
-  output$download <- downloadHandler( # 下载文件
+  output$download <- downloadHandler(
     filename = paste0("Pep2TCR-", Sys.Date(), ".csv"),
     content = function(file) {
       if (!is.null(global_val$batch_int)) {
@@ -250,7 +249,7 @@ server <- function(input, output, session) {
                              global_val$batch_int, ".csv")
         write_csv(read_csv(batch_path), file)
       } else {
-        NULL  # 报错
+        NULL
       }
     }
   )
@@ -268,7 +267,7 @@ server <- function(input, output, session) {
       columnDefs = list(
         list(
           targets = "_all",
-          className = "dt-left"  # 所有列的内容左对齐
+          className = "dt-left"
         )),
       dom = '<"row"<"col-sm-3"B><"col-sm-3"l><"col-sm-6"f>>rtip',
       buttons = list(

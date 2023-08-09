@@ -30,11 +30,11 @@ def main(args):
                                                                   model2_paras=model2_paras, e_device=device, w1=w1,
                                                                   model1_weights_path=model1_weights_path, model2_weights_path=model2_weights_path)
         df["Score"] = list(pred_array)
-        df.loc[~mask, "Score"] = None # 预测失败
+        df.loc[~mask, "Score"] = None # prediction failure
         random_int = random.randint(1, 10000)
         df.to_csv(os.path.join(ab_path, f'tmp/batch_{random_int}.csv'), index=False)
         print(random_int)
-        return random_int  # 根据随机数确定文件
+        return random_int  # According to random_int to ensure a file
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

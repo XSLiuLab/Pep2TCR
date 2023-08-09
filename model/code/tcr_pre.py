@@ -8,9 +8,9 @@ import torch
 
 def main(args):
     if torch.cuda.is_available():
-        print("Find GPU device avaliable, Using GPU mode!")
+        print("Find GPU device avaliable, using GPU mode!")
     else:
-        print("Don't find GPU device avaliable, Using CPU mode!")
+        print("Don't find GPU device avaliable, using CPU mode!")
 
     if args.mode == "single":
         if (8<=len(args.cdr3)<=20) & (9<=len(args.pep)<=20):
@@ -39,7 +39,7 @@ def main(args):
                                                                 model1_weights_path=model1_weights_path, model2_weights_path=model2_weights_path)
         
         df["Score"] = list(pred_array)
-        df.loc[~mask, "Score"] = None # 预测失败
+        df.loc[~mask, "Score"] = None # prediction failure
         if ~all(mask):
             info = ', '.join(list(map(str, ((~mask[~mask]).index + 1).tolist()[:5]))) + " ..."
             print(f'Notice: the sample(s) of {info}, please ensure the length of CDR3 and peptide are 8-20 and 9-20, respectively!!!')

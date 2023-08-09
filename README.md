@@ -46,6 +46,8 @@ show_channel_urls: true
 
 ## Usage
 
+Please modify the `ab_path` of the paras.py file in model\code folder to `/path/to/model_dir` as the first time use.
+
 Pep2TCR has two modes: Single mode and Batch mode. The help page of Pep2TCR is as follows:
 
 ``` python
