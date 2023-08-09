@@ -24,7 +24,6 @@ def encoding_strategy(string: str, encoding_df, pad_char='X', style="One-hotting
         encoding_str = [list(encoding_df[c]) for c in string]
         return np.array(encoding_str)  # shape: (20, 11)
     else:
-        # print("Error Enconding Strategy!!!")
         return None
 
 def encoding(dat, style_path, cdr3_len_max=20, pep_len_max=20, pad_char='X', style="One-hotting", has_label=True):
@@ -47,7 +46,6 @@ def encoding(dat, style_path, cdr3_len_max=20, pep_len_max=20, pad_char='X', sty
             encoding_df['X'] = 0  # 增加一列 X
             encoding_df['-'] = 0  # 增加一列，用于zero-setting
     else:
-        # print("Error Enconding Strategy!!!")
         return None
     
     cdr3_arr = []
@@ -65,7 +63,6 @@ def encoding(dat, style_path, cdr3_len_max=20, pep_len_max=20, pad_char='X', sty
         pep_mask = [a in Amino_acid_list for a in pep]
         if not (all(cdr3_mask) & all(pep_mask)):
             count += 1
-            # print("第{}个样本存在异常氨基酸".format(count))
             continue  # 终止本次循环
         
         encoding_cdr3 = encoding_strategy(cdr3, encoding_df, pad_char=pad_char, style=style)

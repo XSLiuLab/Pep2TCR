@@ -1,12 +1,13 @@
 import torch
 from functions import LSTM_Double_AA, CNN_Double_BLOSUM
+import os
 
 ################################# Change ab_path ####################################
 # 请提供到TCR_web的绝对路径 - Please provide the absolute path to TCR_web dir
 ab_path = "~/R/TCR_Researchs/TCR_web/"
 #####################################################################################
 
-cd4_model_weight_path_avg = ab_path + "TCR_script_web/weights/Avg/cd4_avg_ensemble_random_1.pt"
+cd4_model_weight_path_avg =  os.path.join(ab_path, "TCR_script_web/weights/Avg/cd4_avg_ensemble_random_1.pt")
 has_label = False # 没有标签
 
 # 函数所需参数
@@ -22,7 +23,7 @@ pep_len_max = 20
 pad_char = 'X'
 styles = ['AAindex_11', 'BLOSUM50']
 
-prefix = ab_path + 'TCR_script_web/Encoding_data/'
+prefix = os.path.join(ab_path, 'TCR_script_web/Encoding_data/')
 style_path = [prefix+'One-Hotting.csv', prefix+'One-Hotting.csv',
               prefix+'BLOSUM50.csv', prefix+'BLOSUM62.csv',
               prefix+'aaindex_processed_pca.csv']
@@ -48,5 +49,5 @@ model2_paras = {
     'dropout': 0.3
 }
 
-model1_weights_path = ab_path + 'TCR_script_web/weights/LSTM'
-model2_weights_path = ab_path + 'TCR_script_web/weights/CNN'
+model1_weights_path = os.path.join(ab_path, 'TCR_script_web/weights/LSTM')
+model2_weights_path = os.path.join(ab_path, 'TCR_script_web/weights/CNN')

@@ -1,4 +1,4 @@
-from .model.code.tcr_pre import main
+from model.code.tcr_pre import main
 import argparse
 
 if __name__ == '__main__':

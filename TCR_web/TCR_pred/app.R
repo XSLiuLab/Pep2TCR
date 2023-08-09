@@ -13,6 +13,7 @@ options(spinner.color = "#0dc5c1",
 ################################# Change ab_path ####################################
 # 请提供到TCR_web的绝对路径 - Please provide the absolute path to TCR_web dir
 ab_path <- "~/R/TCR_Researchs/TCR_web/"
+activate_env_cmd <- ". ~/miniconda3/bin/activate;conda activate machine_learning_torch;"
 #####################################################################################
 
 # 读取文件
@@ -142,16 +143,18 @@ server <- function(input, output, session) {
     script <- paste0(ab_path, "TCR_script_web/tcr_pre.py")
     cmd <- paste("python", script, "--mode single --cdr3", input$cdr3,
                  "--pep", input$peptide)
-    system(paste0(". ~/miniconda3/bin/activate;conda activate machine_learning_torch;", cmd),
+    system(paste0(activate_env_cmd, cmd),
            intern = T)
   })
   
   observeEvent(input$single_pre, {
     single.reactiveValues.reset() # 重置
-    if (!(input$peptide=="" | input$cdr3=="")) {
+    pep_mask <- between(nchar(input$peptide), 9, 20) & !str_detect(input$peptide, "[^GAVLIPFYWSTCMNQDEKRHX-]")
+    cdr3_mask <- between(nchar(input$cdr3), 8, 20) & !str_detect(input$cdr3, "[^GAVLIPFYWSTCMNQDEKRHX-]")
+    if (pep_mask & cdr3_mask) {
       global_val$single_score <- single_cal()
     } else {
-      global_val$single_warning <- "Please input CDR3 and peptide!!!"
+      global_val$single_warning <- "Please input correct CDR3 and peptide: CDR3 length 8 - 20, peptide length 9 - 20, don't contain anomalous amino acids!!!"
     }
   })
   
@@ -159,7 +162,7 @@ server <- function(input, output, session) {
     data_path <- input$upload_file$datapath # 获取上传文件路径
     script <- paste0(ab_path, "TCR_script_web/tcr_pre.py")
     cmd <- paste("python", script, "--mode batch --data_path", data_path)
-    system(paste0(". ~/miniconda3/bin/activate;conda activate machine_learning_torch;", cmd),
+    system(paste0(activate_env_cmd, cmd),
            intern = T)
   })
   

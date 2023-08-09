@@ -65,7 +65,7 @@ def encoding(dat, style_path, cdr3_len_max=20, pep_len_max=20, pad_char='X', sty
         pep_mask = [a in Amino_acid_list for a in pep]
         if not (all(cdr3_mask) & all(pep_mask)):
             count += 1
-            print("第{}个样本存在异常氨基酸".format(count))
+            print("The number {} sample exists anomalous amino acids".format(count))
             continue  # 终止本次循环
         
         encoding_cdr3 = encoding_strategy(cdr3, encoding_df, pad_char=pad_char, style=style)
@@ -82,7 +82,7 @@ def encoding(dat, style_path, cdr3_len_max=20, pep_len_max=20, pad_char='X', sty
     if has_label:
         label_arr = np.array(label_arr)
     
-    msg = f'共编码{cdr3_arr.shape[0]}个样本'
+    msg = f'Encoding {cdr3_arr.shape[0]} sample(s)'
     print(msg + '\n' + '-'*len(msg))
     
     return (cdr3_arr, pep_arr, label_arr) if has_label else (cdr3_arr, pep_arr)
@@ -114,7 +114,7 @@ def encoding_single(cdr3, pep, style_path, cdr3_len_max=20, pep_len_max=20, pad_
     cdr3_mask = [a in Amino_acid_list for a in cdr3]
     pep_mask = [a in Amino_acid_list for a in pep]
     if not (all(cdr3_mask) & all(pep_mask)):
-        print("存在异常氨基酸, 终止预测！")
+        print("Presence of anomalous amino acids, prediction terminated.")
         return [0] * 2
     
     encoding_cdr3 = encoding_strategy(cdr3, encoding_df, pad_char=pad_char, style=style)

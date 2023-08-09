@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from sklearn import metrics
 
-import encoding
+from .encoding import encoding, encoding_single
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -147,7 +147,7 @@ class Ensemble(nn.Module):
         if not model1_weights_path is None:
             for _, _, weights_list in os.walk(model1_weights_path):
                 self.n_model1 = len(weights_list)
-                print(f'\n找到{self.n_model1}个Model1')
+                # print(f'\n找到{self.n_model1}个Model1')
                 self.model1_weights_list = weights_list
                 break
             # 创建模型
@@ -159,13 +159,13 @@ class Ensemble(nn.Module):
                 model1.load_state_dict(torch.load(weight_path, map_location=e_device))
                 self.model1_list.append(model1)
         else:
-            print("请提供模型1的权重路径!!!")
+            print("Please provide the weight path for Model 1!!!")
             pass
         
         if not model2_weights_path is None:
             for _, _, weights_list in os.walk(model2_weights_path):
                 self.n_model2 = len(weights_list)
-                print(f'找到{self.n_model2}个Model2')
+                # print(f'找到{self.n_model2}个Model2')
                 self.model2_weights_list = weights_list
                 break
             # 创建模型
@@ -176,10 +176,10 @@ class Ensemble(nn.Module):
                 model2.load_state_dict(torch.load(weight_path, map_location=e_device))
                 self.model2_list.append(model2)
         else:
-            print("请提供模型2的权重路径!!!")
+            print("Please provide the weight path for Model 2!!!")
             pass
         
-        print('集成模型初始化完毕！')
+        print('Pep2TCR has been initialized successfully!')
         
     def change_status(self, training_flag):
         if training_flag is True:
@@ -253,13 +253,13 @@ def ensemble_model_validation(model, loss, test_data, device, has_label=True):
     y_true_array = np.array(0)
     pred_array = np.array(pred)
     if has_label:
-        print("数据集的总损失为%f" % (eval_loss))
+        print("The total loss of the dataset is %f" % (eval_loss))
         y_true_array = np.array(y_true)
         fpr, tpr, _ = metrics.roc_curve(y_true_array, pred_array)
         precision, recall, _ = metrics.precision_recall_curve(y_true_array, pred_array)
         roauc = metrics.auc(fpr, tpr)
         prauc = metrics.auc(recall, precision)
-        print("数据集的ROAUC为%.5f, PRAUC为%.5f" % (roauc, prauc))
+        print("The ROAUC of the dataset is %.5f, PRAUC is %.5f" % (roauc, prauc))
     return roauc, prauc, y_true_array, pred_array
 
 
@@ -275,19 +275,19 @@ def ensemble_data_encoding(data_path, style_path, styles: list,
     style1_label = torch.tensor(0)  # 预设
     style2_label = torch.tensor(0)
     if has_label:
-        style1_cdr3, style1_pep, style1_label = encoding.encoding(val_dat, style_path,  # type: ignore
-                                                                  cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
-                                                                  pad_char=pad_char, style=styles[0], has_label=has_label)  # type: ignore
-        style2_cdr3, style2_pep, style2_label = encoding.encoding(val_dat, style_path,  # type: ignore
-                                                                  cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
-                                                                  pad_char=pad_char, style=styles[1], has_label=has_label)  # type: ignore
+        style1_cdr3, style1_pep, style1_label = encoding(val_dat, style_path,  # type: ignore
+                                                         cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
+                                                         pad_char=pad_char, style=styles[0], has_label=has_label)  # type: ignore
+        style2_cdr3, style2_pep, style2_label = encoding(val_dat, style_path,  # type: ignore
+                                                         cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
+                                                         pad_char=pad_char, style=styles[1], has_label=has_label)  # type: ignore
     else:
-        style1_cdr3, style1_pep = encoding.encoding(val_dat, style_path, # type: ignore
-                                                    cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
-                                                    pad_char=pad_char, style=styles[0], has_label=has_label)  # type: ignore
-        style2_cdr3, style2_pep = encoding.encoding(val_dat, style_path, # type: ignore
-                                                    cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
-                                                    pad_char=pad_char, style=styles[1], has_label=has_label)  # type: ignore
+        style1_cdr3, style1_pep = encoding(val_dat, style_path, # type: ignore
+                                           cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
+                                           pad_char=pad_char, style=styles[0], has_label=has_label)  # type: ignore
+        style2_cdr3, style2_pep = encoding(val_dat, style_path, # type: ignore
+                                           cdr3_len_max=cdr3_len_max, pep_len_max=pep_len_max, 
+                                           pad_char=pad_char, style=styles[1], has_label=has_label)  # type: ignore
     # 转成tensor格式
     style1_cdr3 = torch.from_numpy(style1_cdr3)
     style1_pep = torch.from_numpy(style1_pep)
@@ -323,17 +323,17 @@ def ensemble_model_validation_simple(data_path, style_path, Model, batch_size, m
     model.load_state_dict(torch.load(model_weight_path, map_location=device))
     # 模型测试
     roauc, prauc, y_true_array, pred_array = ensemble_model_validation(model, loss, val_data, device, has_label)
-    print("预测成功!")
+    print("Successful Prediction!")
     return roauc, prauc, y_true_array, pred_array
 
 # single prediction
 def sin_pre(cdr3, pep, style_path, Model, model_weight_path, device, 
             cdr3_len_max=20, pep_len_max=20, pad_char='X', styles=['AAindex_11', 'BLOSUM50'], **model_paras):
 
-    style1_cdr3, style1_pep = encoding.encoding_single(cdr3, pep, style_path, cdr3_len_max, pep_len_max, 
-                                                       pad_char, style=styles[0])
-    style2_cdr3, style2_pep = encoding.encoding_single(cdr3, pep, style_path, cdr3_len_max, pep_len_max, 
-                                                       pad_char, style=styles[1])
+    style1_cdr3, style1_pep = encoding_single(cdr3, pep, style_path, cdr3_len_max, pep_len_max, 
+                                              pad_char, style=styles[0])
+    style2_cdr3, style2_pep = encoding_single(cdr3, pep, style_path, cdr3_len_max, pep_len_max, 
+                                              pad_char, style=styles[1])
     
     style1_cdr3 = torch.from_numpy(style1_cdr3).to(device).unsqueeze(0)
     style1_pep = torch.from_numpy(style1_pep).to(device).unsqueeze(0)
@@ -352,6 +352,6 @@ def sin_pre(cdr3, pep, style_path, Model, model_weight_path, device,
     
     pred_hat = model([style1_cdr3, style1_pep], [style2_cdr3, style2_pep])
 
-    print("预测值为{:.4f}".format(pred_hat.item()))
+    print("Prediction score is {:.4f}".format(pred_hat.item()))
     
     return round(pred_hat.item(), 4)
