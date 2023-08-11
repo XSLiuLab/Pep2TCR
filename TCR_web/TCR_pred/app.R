@@ -12,7 +12,7 @@ options(spinner.color = "#0dc5c1",
 
 ################################# Change ab_path ####################################
 # Please provide the absolute path to TCR_web dir
-ab_path <- "~/R/TCR_Researchs/TCR_web/"
+ab_path <- "/path/to/TCR_web/"
 activate_env_cmd <- ". ~/miniconda3/bin/activate;conda activate machine_learning_torch;"
 #####################################################################################
 
@@ -102,12 +102,18 @@ SearchPage <- fluidPage(
 ))
 
 #####################################################################################
-ui <- navbarPage(title = "CD4 TCR specifity prediction",
+ui <- navbarPage(title = "CD4 TCR specificity prediction",
                  theme = "flatly",
                  tabPanel("Home", HomePage),
                  tabPanel("Search", SearchPage),
-                 tabPanel("Help", ""),
-                 tabPanel("About", ""))
+                 tabPanel("Help", tags$iframe(style ="border: none; height:700px; width:100%; scrolling=yes", 
+                                              src="./Help.html")),
+                 tabPanel("About", fluidPage(fluidRow(tags$iframe(style ="height: 250px; width:70%; overflow-y: hidden; display: block; margin: 0 auto;",
+                                                                  src="./About.html"),
+                                                      div(
+                                                        style = "position: fixed; bottom: 0; left: 50%",
+                                                        HTML("<p>© Liuxs-Lab 2023</p>")
+                                                      )))))
 
 server <- function(input, output, session) {
   global_val <- reactiveValues(

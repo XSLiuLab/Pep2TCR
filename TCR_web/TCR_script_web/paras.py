@@ -4,7 +4,7 @@ import os
 
 ################################# Change ab_path ####################################
 # Please provide the absolute path to TCR_web dir
-ab_path = "~/R/TCR_Researchs/TCR_web/"
+ab_path = "/path/to/TCR_web"
 #####################################################################################
 
 cd4_model_weight_path_avg =  os.path.join(ab_path, "TCR_script_web/weights/Avg/cd4_avg_ensemble_random_1.pt")
