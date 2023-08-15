@@ -1,4 +1,4 @@
-# Pep2TCR: a novel deep learning method for CD4 T cell receptor specificity prediction
+# Pep2TCR: accurate prediction of CD4 T cell receptor binding specificity through transfer learning and ensemble approach
 
 [![License](https://picgo-wutao.oss-cn-shanghai.aliyuncs.com/img/License-MIT-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 

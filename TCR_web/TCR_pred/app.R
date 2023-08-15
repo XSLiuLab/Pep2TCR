@@ -102,7 +102,7 @@ SearchPage <- fluidPage(
 ))
 
 #####################################################################################
-ui <- navbarPage(title = "CD4 TCR specificity prediction",
+ui <- navbarPage(title = "Pep2TCR",
                  theme = "flatly",
                  tabPanel("Home", HomePage),
                  tabPanel("Search", SearchPage),
