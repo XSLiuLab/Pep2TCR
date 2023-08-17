@@ -4,7 +4,7 @@
 
 ## Overview
 
-Pep2TCR can serve as a valuable tool for CD4 TCR specificity prediction and biology applications. This Github repository comprises the codes of Pep2TCR, providing comprehensive guidance for researchers interested in Pep2TCR.  Also, we provide a docker image at [Docker Hub](https://hub.docker.com/repository/docker/liuxslab/pep2tcr/general) and a website at [https://liuxslab.com/Pep2TCR/](https://liuxslab.com/Pep2TCR/) for convenient usage. 
+Pep2TCR can serve as a valuable tool for CD4 TCR specificity prediction and biology applications. This Github repository comprises the codes of Pep2TCR, providing comprehensive guidance for researchers interested in Pep2TCR.  Also, we provide a docker image at [Docker Hub](https://hub.docker.com/repository/docker/liuxslab/pep2tcr/general) and a website at [http://pep2tcr.liuxslab.com](http://pep2tcr.liuxslab.com) for convenient usage. 
 
 ## Contents
 
