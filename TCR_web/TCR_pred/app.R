@@ -88,9 +88,9 @@ SearchPage <- fluidPage(
                       fluidRow(actionButton("search", "Search"),
                                HTML(paste0(rep("&nbsp;", 10), collapse = "")),
                                actionButton("clear", "Clear"))),
-               p("Tip: When initiating a search without specifying a sequence, the system retrieves and presents the complete contents of the database."),
+               p("Tip: when initiating a search without specifying a sequence, the system retrieves and presents the complete contents of the database."),
                br(),
-               strong("Note: Those are collected positive CD4 TCRB CDR3 data, column of Score is obtained from our model.")
+               strong("Note: those are collected positive CD4 TCRβ CDR3-peptide interaction data, column of Score is obtained from our model.")
                ),
            box(width = 8, 
                DT::dataTableOutput("table") %>% withSpinner(proxy.height = "400px",
@@ -176,7 +176,7 @@ server <- function(input, output, session) {
     if (!is.null(input$upload_file)) { 
       global_val$batch_int <- batch_cal()
     } else {
-      global_val$batch_warning <- "Please upload a file that meet required format!!!"
+      global_val$batch_warning <- "Please upload a file that meets required format!!!"
     }
   })
   
