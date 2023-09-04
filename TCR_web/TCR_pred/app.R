@@ -12,7 +12,7 @@ options(spinner.color = "#0dc5c1",
 
 ################################# Change ab_path ####################################
 # Please provide the absolute path to TCR_web dir
-ab_path <- "/path/to/TCR_web/"
+ab_path <- "/home/dkx/R/TCR_Researchs/Pep2TCR/TCR_web/"
 activate_env_cmd <- ". ~/miniconda3/bin/activate;conda activate machine_learning_torch;"
 #####################################################################################
 
@@ -118,6 +118,7 @@ ui <- navbarPage(title = "CD4 TCR specificity prediction",
 server <- function(input, output, session) {
   global_val <- reactiveValues(
     single_score = NULL,
+    single_rank = NULL,
     single_warning = NULL,
     batch_int = NULL,
     batch_warning = NULL,
@@ -129,6 +130,7 @@ server <- function(input, output, session) {
   
   single.reactiveValues.reset <- function() {
     global_val$single_score  <-  NULL
+    global_val$single_rank  <-  NULL
     global_val$single_warning  <-  NULL
   }
   
@@ -157,7 +159,9 @@ server <- function(input, output, session) {
     pep_mask <- between(nchar(input$peptide), 9, 20) & !str_detect(input$peptide, "[^GAVLIPFYWSTCMNQDEKRHX-]")
     cdr3_mask <- between(nchar(input$cdr3), 8, 20) & !str_detect(input$cdr3, "[^GAVLIPFYWSTCMNQDEKRHX-]")
     if (pep_mask & cdr3_mask) {
-      global_val$single_score <- single_cal()
+      sin_tmp <- str_split(single_cal(), pattern = " ", simplify = T)
+      global_val$single_score <- sin_tmp[1, 1]
+      global_val$single_rank <- sin_tmp[1, 2]
     } else {
       global_val$single_warning <- "Please input correct CDR3 and peptide: CDR3 length 8 - 20, peptide length 9 - 20, don't contain anomalous amino acids!!!"
     }
@@ -218,7 +222,7 @@ server <- function(input, output, session) {
 ##################################################################################### 
   output$single_res <- renderText(
     if (!is.null(global_val$single_score)) {
-      paste("Prediction score is ", global_val$single_score)
+      paste0("Prediction score is ", global_val$single_score, ", rank is ", global_val$single_rank)
   } else {
     global_val$single_warning
   })
