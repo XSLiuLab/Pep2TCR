@@ -12,7 +12,7 @@ options(spinner.color = "#0dc5c1",
 
 ################################# Change ab_path ####################################
 # Please provide the absolute path to TCR_web dir
-ab_path <- "/home/dkx/R/TCR_Researchs/Pep2TCR/TCR_web/"
+ab_path <- "/path/to/TCR_web"
 activate_env_cmd <- ". ~/miniconda3/bin/activate;conda activate machine_learning_torch;"
 #####################################################################################
 
@@ -90,7 +90,7 @@ SearchPage <- fluidPage(
                                actionButton("clear", "Clear"))),
                p("Tip: when initiating a search without specifying a sequence, the system retrieves and presents the complete contents of the database."),
                br(),
-               strong("Note: those are collected positive CD4 TCRβ CDR3-peptide interaction data, column of Score is obtained from our model.")
+               strong("Note: those are collected positive CD4 TCRβ CDR3-peptide interaction data, column of Score and Rank are obtained from Pep2TCR.")
                ),
            box(width = 8, 
                DT::dataTableOutput("table") %>% withSpinner(proxy.height = "400px",
