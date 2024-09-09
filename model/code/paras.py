@@ -3,7 +3,7 @@ from .functions import LSTM_Double_AA, CNN_Double_BLOSUM
 import os
 
 ################################# Change ab_path ####################################
-# Please provide the absolute path to model dir
+# Please provide the absolute path to model dir, like ab_path = "/home/user/Pep2TCR/model"
 ab_path = "/path/to/model"
 #####################################################################################
 

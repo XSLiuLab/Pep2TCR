@@ -28,7 +28,7 @@ We used Pytorch to train and validate Pep2TCR, so users should install the follo
 
 If the user's system is equipped with a GPU, they can install `cudatoolkit == 11.3.1`, which will result in an acceleration of prediction speed. 
 
-Users also can setting up Conda environment through `conda env create -f environment.yaml`, this might take a bit of time, but it's incredibly convenient. In addition, please rewrite your `.condarc` file as following:
+Users also can setting up Conda environment through `conda install -c conda-forge mamba`,`mamba env create -f environment.yaml`, this might take a bit of time, but it's convenient. In addition, please rewrite your `.condarc` file as following:
 
 ```bash
 channels:
@@ -46,7 +46,7 @@ show_channel_urls: true
 
 ## Usage
 
-Please modify the `ab_path` of the paras.py file in model\code folder to `/path/to/model_dir` as the first time use.
+Please modify the `ab_path` paramemter of the paras.py file in model\code folder to `/path/to/model_dir` as the first time use.
 
 Pep2TCR has two modes: Single mode and Batch mode. The help page of Pep2TCR is as follows:
 
